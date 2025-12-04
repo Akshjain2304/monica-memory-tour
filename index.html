@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>For Monica — Memory Tour (Fixed Portrait + Extra Shayari)</title>
+  <meta name="description" content="Friends memory tour — portrait images shown full, slide 2 has two shayaris, final note ~85 words.">
+  <style>
+    :root{
+      --maxw:980px; --card-radius:18px; --shadow:0 18px 50px rgba(3,10,30,0.08);
+      --accent1:#2b5aa7; --accent2:#e94b3c; --accent3:#f6c244; --accent4:#264f86; --accent5:#ff7b6a;
+      --bg1:#f7f7f7; --bg2:#fffaf0; --muted:#4b5563; --ease:cubic-bezier(.2,.9,.3,1);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+      -webkit-font-smoothing:antialiased;color:#071023;padding:20px;display:flex;justify-content:center;
+      background: radial-gradient(900px 400px at 8% 10%, rgba(0,0,0,0.02), transparent 8%), linear-gradient(180deg,var(--bg1),var(--bg2));
+    }
+    .wrap{width:100%;max-width:var(--maxw);}
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.99)); border-radius:var(--card-radius); padding:18px; box-shadow:var(--shadow); border:1px solid rgba(10,20,30,0.03); position:relative; overflow:hidden}
+
+    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand h1{letter-spacing:8px;font-weight:900;font-size:18px;margin:0}
+    .dots{display:flex;gap:6px}
+    .dot{width:9px;height:9px;border-radius:999px}
+    .dot.d1{background:var(--accent1)}.dot.d2{background:var(--accent2)}.dot.d3{background:var(--accent3)}.dot.d4{background:var(--accent4)}.dot.d5{background:var(--accent5)}
+    .profile-meta{text-align:right;color:var(--muted);font-size:13px}
+
+    .page{min-height:520px;display:none;flex-direction:column;gap:12px}
+    .page.active{display:flex;animation:fadeIn .45s var(--ease) both}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+    .start-grid{display:grid;grid-template-columns:1fr 360px;gap:18px;align-items:center}
+    @media(max-width:920px){ .start-grid{grid-template-columns:1fr} .start-right{order:-1} }
+    .typed{font-weight:800;font-size:20px;background:linear-gradient(90deg,var(--accent4),var(--accent1));-webkit-background-clip:text;color:transparent}
+    .start-desc{color:var(--muted);margin-top:6px}
+    .cta-row{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+    .btn{padding:12px 16px;border-radius:12px;border:none;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--accent4),var(--accent1));color:white;box-shadow:0 14px 40px rgba(0,0,0,0.06)}
+    .btn.ghost{background:transparent;border:2px solid rgba(10,20,30,0.06);color:#071023}
+
+    /* LANDSCAPE FRAME: by default we show fill (cover) for landscape */
+    .landscape-frame{
+      width:100%;
+      aspect-ratio:16/9;
+      max-height:420px;
+      overflow:hidden;border-radius:12px;background:linear-gradient(180deg,#fff,#fbfeff);
+      display:block;border:1px solid rgba(0,0,0,0.04);
+    }
+    .landscape-frame img{
+      width:100%; height:100%; object-fit:cover; object-position:center; display:block; transition:transform .4s ease;
+    }
+
+    /* If portrait detected we switch to 'portrait-full' which shows the whole image using contain and letterboxed background */
+    .landscape-frame.portrait-full{
+      display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#fbfbfe,#fff);
+    }
+    .landscape-frame.portrait-full img{
+      object-fit:contain; width:auto; height:100%;
+    }
+
+    .slide-wrap{display:flex;flex-direction:column;gap:12px;align-items:center}
+    .slide-card{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;justify-content:center;width:100%}
+    .slide-photo{width:560px;max-width:100%;border-radius:14px;padding:0;background:transparent;border:none}
+    .slide-text{max-width:620px;background:linear-gradient(90deg,rgba(255,255,255,0.98),rgba(250,250,255,1));padding:18px;border-radius:12px;border-left:10px solid rgba(96,165,250,0.9);box-shadow:0 12px 30px rgba(2,6,23,0.04)}
+    .slide-text p{margin:0;font-size:20px;line-height:1.45;font-weight:700;color:#021827}
+    .slide-text p.secondary{font-size:18px;font-weight:700;margin-top:10px;color:#0b2d3a}
+
+    .thumbs{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:12px;flex-wrap:wrap}
+    .thumb{width:82px;height:52px;border-radius:8px;overflow:hidden;border:2px solid rgba(255,255,255,0.6);cursor:pointer;transition:transform .2s, box-shadow .2s}
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .thumb:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(2,6,23,0.08)}
+    .thumb.active{outline:3px solid rgba(96,165,250,0.12);transform:scale(1.03)}
+
+    .final-wrap{display:flex;flex-direction:column;gap:14px;align-items:center}
+    .best-photo{max-width:780px;width:100%;border-radius:16px;overflow:hidden;border:8px solid rgba(255,255,255,0.6);box-shadow:0 26px 80px rgba(2,6,23,0.14)}
+    .best-photo img{width:100%;display:block;border-radius:8px}
+    .audio-card{max-width:780px;width:100%;background:linear-gradient(90deg,#fff,#f8fffe);padding:14px;border-radius:12px;border:1px solid rgba(0,0,0,0.04)}
+
+    .big-note{
+      max-width:880px;background:linear-gradient(180deg,#fff,#fffefb);padding:24px;border-radius:12px;border-left:10px solid rgba(96,165,250,0.95);line-height:1.88;font-size:18px;box-shadow:0 18px 60px rgba(2,6,23,0.06);text-align:left;
+    }
+    .big-note strong{display:block;font-size:20px;margin-bottom:8px}
+
+    .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,6,10,0.75);z-index:9999;padding:14px}
+    .lightbox img{max-width:95%;max-height:90%;border-radius:12px;box-shadow:0 30px 80px rgba(2,6,23,0.6)}
+
+    .navsmall{font-size:13px;color:var(--muted)}
+    @media(max-width:920px){ .slide-card{flex-direction:column} .landscape-frame{max-height:320px} .big-note{padding:16px;font-size:16px;line-height:1.7} }
+    @media(max-width:560px){ body{padding:12px} .landscape-frame{max-height:240px} .slide-text p{font-size:18px} .big-note{font-size:16px} .thumb{width:56px;height:40px} }
+  </style>
+</head>
+<body class="theme-retro">
+  <div class="wrap">
+    <div class="card" style="padding:0;overflow:visible;">
+      <div class="header" style="padding:18px;position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;align-items:center;gap:12px">
+          <h1 style="letter-spacing:8px;font-weight:900">F R I E N D S</h1>
+          <div style="display:flex;gap:6px">
+            <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span><span class="dot d4"></span><span class="dot d5"></span>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="profile-meta"><div><strong>For Monica</strong></div><div class="navsmall">Coffee • Gossip • Movies • Food</div></div>
+          <div style="display:flex;gap:8px">
+            <button id="retroBtn" class="btn ghost" style="padding:8px 12px;font-weight:700;background:linear-gradient(90deg,var(--accent4),var(--accent1));color:#fff;border:none">Retro</button>
+            <button id="pastelBtn" class="btn ghost" style="padding:8px 12px;font-weight:700">Pastel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- START PAGE -->
+      <section id="page-start" class="page active" style="padding:22px;z-index:2">
+        <div class="start-grid">
+          <div>
+            <div class="typed">A memory tour — made with coffee, gossip & film nights ✨</div>
+            <p class="start-desc">Tum meri female version ho — same jokes, same memes, same playlist. Start pe click karo aur chal padein: images, faadu shayari lines, aur last me ek bada heartfelt note + song.</p>
+            <div class="cta-row" style="margin-top:12px">
+              <button id="btnStart" class="btn">Start the Tour</button>
+              <button class="btn ghost" onclick="flash('Playful, cozy, forever')">Why this?</button>
+              <button class="btn ghost" onclick="generateAndPrintCert('Monica')">Print Certificate</button>
+            </div>
+            <div style="margin-top:10px" class="navsmall">Tip: Use keyboard ← → • Click thumbnails to jump</div>
+          </div>
+
+          <div>
+            <div class="landscape-frame start-image" onclick="openLightbox(ASSETS.start)">
+              <img id="startImg" src="" alt="start image">
+            </div>
+            <div style="display:flex;gap:10px;margin-top:8px;align-items:center">
+              <div style="padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,var(--accent2),var(--accent1));color:white;font-weight:700">Memory Tour</div>
+              <div class="navsmall" style="color:var(--muted)">Click image to enlarge</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slides will be inserted here -->
+      <div id="slides-root"></div>
+
+      <div id="lightbox" class="lightbox" role="dialog" aria-hidden="true" onclick="closeLightbox()">
+        <img id="lbImg" src="" alt="enlarged image">
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+  // ASSETS - edit paths if needed
+  const ASSETS = {
+    start: 'Assets/mondler.jpg',
+    slides: [
+      { img: 'Assets/1.jpg', shayari: ["Monica — teri hasi se meri duniya reboot ho jaati hai. Tum ho toh har sad scene bhi thodi si cute lagti hai."] },
+      { img: 'Assets/2.jpg', shayari: [
+            "Tum gossip queen ho, par tumhari secrets safe hain meri playlist mein — sirf tumhare liye saved.",
+            "Coffee + tumhari company = therapy — tumhara ek sip aur saari problems mute."
+        ]
+      },
+      { img: 'Assets/3.jpg', shayari: ["Hamari bakwaas wali jokes aur late-night commentary, dono hi priceless hain."] },
+      { img: 'Assets/5.jpg', shayari: ["Humari nok-jhok? woh cute war hai jahan tum jeet bhi jao aur main phir bhi tumhari hi fan rahoon."] },
+      { img: 'Assets/6.jpg', shayari: ["Discord pe movie, tumhara commentary aur mera popcorn — simple recipe for pure serotonin."] }
+    ],
+    best: { img: 'Assets/4.jpg', audio: 'Assets/our.mp3' }
+  };
+
+  // helper
+  function el(t,c,h){ const e=document.createElement(t); if(c) e.className=c; if(h) e.innerHTML=h; return e; }
+
+  // create slides
+  const root = document.getElementById('slides-root');
+  function createSlidePage(i, slide){
+    const page = el('section','page card');
+    page.id = 'page-slide-'+(i+1);
+    const wrap = el('div','slide-wrap');
+
+    const card = el('div','slide-card');
+
+    // frame
+    const photoWrap = el('div','slide-photo');
+    const frame = el('div','landscape-frame');
+    const img = el('img'); img.src = slide.img; img.alt = 'slide-'+(i+1);
+    img.onclick = ()=> openLightbox(slide.img);
+    img.onerror = function(){ this.style.opacity = 0.6; this.title = 'Missing: '+slide.img; };
+    // when image loads, detect orientation and toggle portrait-full class if needed
+    img.addEventListener('load', function(){
+      if(this.naturalHeight > this.naturalWidth){
+        frame.classList.add('portrait-full');
+      } else {
+        frame.classList.remove('portrait-full');
+      }
+    });
+    frame.appendChild(img);
+    photoWrap.appendChild(frame);
+
+    // text area: in most slides show first shayari; for slides which have array we show all lines
+    const text = el('div','slide-text');
+    if(Array.isArray(slide.shayari)){
+      // multiple lines
+      let html = '';
+      slide.shayari.forEach((s, idx) => {
+        // first p uses main style, others use secondary class
+        if(idx === 0) html += `<p>${s}</p>`;
+        else html += `<p class="secondary">${s}</p>`;
+      });
+      text.innerHTML = html;
+    } else {
+      text.innerHTML = `<p>${slide.shayari}</p>`;
+    }
+
+    card.appendChild(photoWrap); card.appendChild(text);
+    wrap.appendChild(card);
+
+    // thumbnails
+    const thumbs = el('div','thumbs');
+    ASSETS.slides.forEach((s, idx) => {
+      const t = el('div','thumb'); if(idx === i) t.classList.add('active');
+      const ti = el('img'); ti.src = s.img; ti.alt = 'thumb'+(idx+1);
+      ti.onclick = ()=> goToPage(idx+1);
+      ti.onerror = function(){ this.style.opacity = 0.6; }
+      t.appendChild(ti); thumbs.appendChild(t);
+    });
+    wrap.appendChild(thumbs);
+
+    // nav controls
+    const nav = el('div','slide-controls');
+    const prev = el('button','btn ghost','◀ Previous'); prev.onclick = ()=> goToPage(i);
+    const info = el('div','navsmall',`Slide ${i+1} of ${ASSETS.slides.length + 1}`);
+    const next = el('button','btn','Next ▶'); next.onclick = ()=> goToPage(i+2);
+    nav.appendChild(prev); nav.appendChild(info); nav.appendChild(next);
+    wrap.appendChild(nav);
+
+    page.appendChild(wrap);
+    return page;
+  }
+
+  function createFinalPage(){
+    const page = el('section','page card');
+    page.id = 'page-final';
+    const wrap = el('div','final-wrap');
+
+    const bestWrap = el('div','best-photo');
+    const bestFrame = el('div','landscape-frame');
+    const bestImg = el('img'); bestImg.src = ASSETS.best.img; bestImg.alt = 'best';
+    bestImg.onclick = ()=> openLightbox(ASSETS.best.img);
+    bestImg.onerror = function(){ this.style.opacity=0.6; this.title='Missing: '+ASSETS.best.img; };
+    // detect orientation on load
+    bestImg.addEventListener('load', function(){
+      if(this.naturalHeight > this.naturalWidth) bestFrame.classList.add('portrait-full'); else bestFrame.classList.remove('portrait-full');
+    });
+    bestFrame.appendChild(bestImg); bestWrap.appendChild(bestFrame);
+
+    const audioCard = el('div','audio-card');
+    audioCard.innerHTML = `<div style="font-weight:800">Song for Monica</div><div class="navsmall" style="color:var(--muted)">Audio path: <code>${ASSETS.best.audio}</code></div><audio id="final-audio" controls src="${ASSETS.best.audio}" style="width:100%;margin-top:8px"></audio>`;
+
+    // final paragraph ~85 words (Hinglish)
+    const bigNote = el('div','big-note');
+    bigNote.innerHTML = `<strong>Monica — mera ekdum real best friend,</strong>
+      <p style="margin-top:10px">
+      Monica, teri dosti mere liye ek safe space hai. Humne board results ki khushi se leke late-night Discord movie commentary tak sab kuch share kiya. Tumhara masaledaar gossip, coffee ki perfect cup aur hamari bakwaas jokes har doori mita deti hain. Jodhpur aur Pune ke beech bhi humne itne moments banaye jo hamesha replay karne layak hain. Tum mere liye sirf friend nahi, ek family ho — sincere, funny, aur forever. Bas yunhi haste raho.
+      </p>`;
+
+    const controls = el('div','slide-controls');
+    const backBtn = el('button','btn ghost','◀ Back'); backBtn.onclick = ()=> goToPage(ASSETS.slides.length);
+    const finishBtn = el('button','btn','Finish ✨'); finishBtn.onclick = ()=> { runConfetti(); flash('Sent with love ❤️'); }
+    controls.appendChild(backBtn); controls.appendChild(finishBtn);
+
+    wrap.appendChild(bestWrap); wrap.appendChild(audioCard); wrap.appendChild(bigNote); wrap.appendChild(controls);
+    page.appendChild(wrap);
+    return page;
+  }
+
+  // build pages
+  const slidesRoot = document.getElementById('slides-root');
+  function buildPages(){
+    ASSETS.slides.forEach((s,i) => slidesRoot.appendChild(createSlidePage(i,s)));
+    slidesRoot.appendChild(createFinalPage());
+  }
+  buildPages();
+
+  // start image (landscape frame used but portrait detection will kick in)
+  const startImgEl = document.getElementById('startImg');
+  startImgEl.src = ASSETS.start;
+  startImgEl.addEventListener('load', function(){
+    const frame = this.closest('.landscape-frame');
+    if(this.naturalHeight > this.naturalWidth) frame.classList.add('portrait-full'); else frame.classList.remove('portrait-full');
+  });
+  startImgEl.onerror = function(){ this.style.opacity = .6; this.title = 'Missing: '+ASSETS.start; };
+
+  // pages control
+  function pages(){ return Array.from(document.querySelectorAll('.page')); }
+  let current = 0;
+  function showPage(i){
+    const ps = pages(); const max = ps.length - 1;
+    if(i < 0) i = 0; if(i > max) i = max; current = i;
+    ps.forEach((p,idx) => p.classList.toggle('active', idx === i));
+    const headerMeta = document.querySelector('.profile-meta');
+    if(headerMeta) headerMeta.innerHTML = `<div><strong>For Monica</strong></div><div class="navsmall">Step ${Math.max(0,i)} / ${ps.length - 1}</div>`;
+    document.querySelectorAll('.thumb').forEach((t, idx)=> t.classList.toggle('active', idx === (i-1)));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function goToPage(idx){ showPage(idx); }
+
+  document.getElementById('btnStart').addEventListener('click', ()=> goToPage(1));
+  document.addEventListener('keydown', (e)=> { if(e.key === 'ArrowRight') goToPage(current+1); if(e.key === 'ArrowLeft') goToPage(current-1); });
+
+  // lightbox
+  const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lbImg');
+  function openLightbox(src){ lbImg.src = src; lb.style.display = 'flex'; lb.setAttribute('aria-hidden','false'); }
+  function closeLightbox(){ lbImg.src=''; lb.style.display='none'; lb.setAttribute('aria-hidden','true'); }
+  window.openLightbox = openLightbox; window.closeLightbox = closeLightbox;
+  lb.addEventListener('click',(e)=> { if(e.target === lb) closeLightbox(); });
+  document.addEventListener('keydown',(e)=> { if(e.key === 'Escape') closeLightbox(); });
+
+  // toast / confetti / print
+  function flash(msg){ const t=document.createElement('div'); t.textContent=msg; t.style.position='fixed'; t.style.left='50%'; t.style.top='22px'; t.style.transform='translateX(-50%)'; t.style.background='linear-gradient(90deg,var(--accent1),var(--accent2))'; t.style.color='#fff'; t.style.padding='10px 14px'; t.style.borderRadius='999px'; t.style.zIndex=99999; document.body.appendChild(t); setTimeout(()=> t.style.opacity='0',1500); setTimeout(()=> t.remove(),2100); }
+  function runConfetti(){ const colors=[getComputedStyle(document.documentElement).getPropertyValue('--accent1').trim(), getComputedStyle(document.documentElement).getPropertyValue('--accent2').trim(), getComputedStyle(document.documentElement).getPropertyValue('--accent3').trim(), getComputedStyle(document.documentElement).getPropertyValue('--accent5').trim(), getComputedStyle(document.documentElement).getPropertyValue('--accent4').trim()]; for(let i=0;i<36;i++){ const e=document.createElement('div'); const s=Math.random()*10+8; e.style.width=s+'px'; e.style.height=(s*0.6)+'px'; e.style.background = colors[Math.floor(Math.random()*colors.length)]||'#60a5fa'; e.style.position='fixed'; e.style.left = Math.random()*window.innerWidth + 'px'; e.style.top='-20px'; e.style.zIndex=9999; e.style.borderRadius='3px'; document.body.appendChild(e); const dur=1000+Math.random()*900; e.animate([{transform:'translateY(0) rotate(0)'},{transform:`translateY(${window.innerHeight+200}px) rotate(${Math.random()*720}deg)`}],{duration:dur,easing:'cubic-bezier(.2,.8,.2,1)'}); setTimeout(()=> e.remove(), dur+60);} }
+  function generateAndPrintCert(name='Monica'){ const html=`<div style="font-family:Arial;padding:40px;background:#f6f7fb"><div style="max-width:720px;margin:auto;background:#fff;padding:28px;border-radius:12px;text-align:center"><h1>Certificate of Best Friend</h1><h2 style="color:#06b6d4">${name}</h2><p>For unlimited gossip, movie nights, coffee, and being an irreplaceable friend across distance.</p></div></div>`; const w=window.open('','_blank','width=900,height=700'); if(!w){ flash('Allow popups to print'); return; } w.document.write(html); w.document.close(); w.focus(); setTimeout(()=> { w.print(); w.close(); }, 500); }
+
+  window.flash = flash; window.runConfetti = runConfetti; window.generateAndPrintCert = generateAndPrintCert;
+
+  // small thumbnail row under start (optional)
+  setTimeout(()=> {
+    const startFooter = document.querySelector('#page-start .navsmall');
+    if(startFooter){
+      // append thumbs below small text
+      const thumbsRow = document.createElement('div');
+      thumbsRow.style.marginTop='12px';
+      ASSETS.slides.forEach((s, idx) => {
+        const t = el('div','thumb'); t.style.display='inline-block'; t.style.marginRight='8px';
+        const ti = el('img'); ti.src = s.img; ti.style.width='52px'; ti.style.height='36px'; ti.style.objectFit='cover';
+        ti.onclick = ()=> goToPage(idx+1); ti.onerror=function(){ this.style.opacity=.6; };
+        t.appendChild(ti); thumbsRow.appendChild(t);
+      });
+      startFooter.parentNode.appendChild(thumbsRow);
+    }
+  },200);
+
+  // theme toggle (simple)
+  document.getElementById('retroBtn').addEventListener('click', ()=> {
+    document.body.classList.remove('theme-pastel'); document.body.classList.add('theme-retro');
+  });
+  document.getElementById('pastelBtn').addEventListener('click', ()=> {
+    document.body.classList.remove('theme-retro'); document.body.classList.add('theme-pastel');
+  });
+
+  // start at page 0
+  showPage(0);
+  </script>
+</body>
+</html>
